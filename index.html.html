@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1c9a6b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Uy ro‘zg‘ori">
+<title>Uy ro‘zg‘ori</title>
+<meta name="description" content="Uyda tugagan narsalarni belgilang, do‘konga ketayotgan odam birma-bir ptichka qo‘yib chiqadi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f2ec; --card:#ffffff; --ink:#1f2a24; --mut:#667568; --line:#e7e2d6;
+  --acc:#1c9a6b; --acc-ink:#ffffff; --soft:#dff3ea; --warn:#f26b4f; --warn-soft:#fde5df; --chip:#efebe1;
+  --shadow:0 1px 2px rgba(31,42,36,.06),0 6px 20px rgba(31,42,36,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111613; --card:#1a221d; --ink:#eaf2ec; --mut:#8fa196; --line:#29352e;
+    --acc:#34c58d; --acc-ink:#07150e; --soft:#173126; --warn:#ff8a70; --warn-soft:#3a211b; --chip:#232d27;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111613; --card:#1a221d; --ink:#eaf2ec; --mut:#8fa196; --line:#29352e;
+  --acc:#34c58d; --acc-ink:#07150e; --soft:#173126; --warn:#ff8a70; --warn-soft:#3a211b; --chip:#232d27;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;height:60px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:38px;height:38px;border-radius:12px;background:var(--acc);display:grid;place-items:center;font-size:21px;flex:none}
+.brand b{display:block;font-size:18px;font-weight:800;line-height:1.1}
+.brand small{display:block;color:var(--mut);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-r{display:flex;gap:8px;align-items:center}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:700;display:flex;gap:6px;align-items:center;color:var(--mut)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--mut);display:block}
+.pill.ok i{background:var(--acc)} .pill.ok{color:var(--ink)}
+.pill.err i{background:var(--warn)} .pill.err{color:var(--warn)}
+.icon{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;padding:0}
+.icon svg{width:20px;height:20px}
+
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.view{padding-top:16px;display:flex;flex-direction:column;gap:16px}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hero h1{font-size:23px;font-weight:800;line-height:1.15}
+.hero p{margin:4px 0 0;color:var(--mut);font-size:14px}
+.count{min-width:56px;height:56px;border-radius:18px;background:var(--soft);color:var(--acc);display:grid;place-items:center;font-size:26px;font-weight:800;flex:none}
+h3.sec{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:4px 2px 8px;font-weight:800}
+
+.search{display:flex;gap:8px}
+.search input{flex:1;min-width:0;height:50px;border-radius:16px;border:1px solid var(--line);background:var(--card);padding:0 16px;font-size:16px;outline:none}
+.search input:focus,.f input:focus,.f select:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--soft)}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px 16px;font-weight:800;min-height:46px}
+.btn.p{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.d{color:var(--warn);border-color:var(--warn-soft)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.5}
+
+/* catalog chips */
+.cat{margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid transparent;background:var(--chip);border-radius:999px;padding:9px 14px;font-weight:700;font-size:15px;display:flex;gap:6px;align-items:center;min-height:42px;transition:transform .12s}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--soft);border-color:var(--acc);color:var(--acc)}
+.chip.on::after{content:'Yo‘q';font-size:11px;font-weight:800;background:var(--acc);color:var(--acc-ink);border-radius:999px;padding:1px 7px;margin-left:2px}
+.chip.got{opacity:.55}
+.chip.got::after{content:'olingan';font-size:11px;font-weight:800;margin-left:2px}
+
+/* lists */
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px 10px 10px 12px;min-height:64px}
+.row.urgent{border-color:var(--warn);background:linear-gradient(0deg,var(--card),var(--card)),var(--warn-soft)}
+.row.done .nm{text-decoration:line-through;color:var(--mut)}
+.tick{width:46px;height:46px;border-radius:50%;border:2.5px solid var(--line);background:transparent;display:grid;place-items:center;flex:none;padding:0;transition:background .15s,border-color .15s,transform .15s}
+.tick svg{width:26px;height:26px;stroke:var(--acc-ink);stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:26;stroke-dashoffset:26;transition:stroke-dashoffset .25s .05s}
+.tick:active{transform:scale(.92)}
+.row.done .tick{background:var(--acc);border-color:var(--acc)}
+.row.done .tick svg{stroke-dashoffset:0}
+.row .em{font-size:26px;flex:none;width:34px;text-align:center}
+.row .bd{flex:1;min-width:0;text-align:left;border:0;background:none;padding:0}
+.row .nm{display:block;font-weight:800;font-size:17px;overflow:hidden;text-overflow:ellipsis}
+.row .mt{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px;color:var(--mut);font-size:12.5px;font-weight:600}
+.tag{background:var(--chip);border-radius:999px;padding:1px 8px}
+.tag.w{background:var(--warn-soft);color:var(--warn)}
+.more{width:40px;height:40px;border:0;background:none;color:var(--mut);font-size:22px;flex:none;border-radius:12px}
+.groupH{display:flex;align-items:center;gap:8px;margin:14px 2px 8px;font-weight:800;color:var(--mut);font-size:13px;letter-spacing:.05em;text-transform:uppercase}
+.groupH:first-child{margin-top:0}
+.empty{color:var(--mut);text-align:center;padding:22px 10px;font-weight:600}
+
+/* shop */
+.prog{display:flex;align-items:center;gap:14px}
+.ring{width:64px;height:64px;flex:none;position:relative}
+.ring svg{width:64px;height:64px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:8}
+.ring .bg{stroke:var(--chip)}
+.ring .fg{stroke:var(--acc);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:15px;font-weight:800}
+.prog b.t{font-size:18px;display:block}
+.prog small{color:var(--mut);font-weight:600}
+.seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:4px;align-self:flex-start}
+.seg button{border:0;background:none;padding:8px 18px;border-radius:999px;font-weight:800;color:var(--mut);min-height:38px}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.cele{text-align:center;background:var(--soft);border-color:var(--acc);animation:pop .5s}
+.cele .big{font-size:46px;line-height:1}
+.cele h2{font-size:22px;margin:6px 0 2px}
+.cele p{margin:0;color:var(--mut)}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+details.dn{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:4px 14px}
+details.dn summary{cursor:pointer;font-weight:800;padding:12px 0;color:var(--mut)}
+details.dn .list{margin-bottom:12px}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
+.nav .wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0}
+.nav button{border:0;background:none;border-radius:16px;padding:8px 6px;font-weight:800;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;min-height:56px}
+.nav button svg{width:24px;height:24px}
+.nav button.on{color:var(--acc);background:var(--soft)}
+.nav .bd{position:absolute;top:4px;left:calc(50% + 8px);background:var(--warn);color:#fff;border-radius:999px;font-size:11px;min-width:20px;height:20px;display:grid;place-items:center;padding:0 5px;font-weight:800}
+
+/* bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.bar .btn{width:100%;font-size:18px;min-height:54px;border-radius:16px}
+.alert{background:var(--warn);color:#fff;border-radius:20px;padding:16px;display:flex;gap:12px;align-items:center;justify-content:space-between;animation:pop .4s}
+.alert b{font-size:18px;display:block;line-height:1.2}.alert small{opacity:.92;font-weight:600}
+.alert button{border:0;background:#fff;color:var(--warn);font-weight:800;border-radius:12px;padding:10px 14px;flex:none}
+.roles{display:grid;gap:12px;padding:6px 18px 22px}
+.roleb{border:1.5px solid var(--line);background:var(--card);border-radius:20px;padding:18px;text-align:left;display:flex;gap:14px;align-items:center}
+.roleb .e{font-size:36px}.roleb b{display:block;font-size:19px}.roleb small{color:var(--mut);font-weight:600}
+.roleb:active{transform:scale(.98)}
+/* dialogs */
+dialog{border:0;border-radius:24px;background:var(--bg);color:var(--ink);padding:0;width:min(520px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+dialog[open]{display:flex;flex-direction:column}
+dialog::backdrop{background:rgba(10,14,12,.55);backdrop-filter:blur(3px)}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 8px}
+.dh h2{font-size:20px}
+.xb{border:0;background:var(--chip);width:36px;height:36px;border-radius:50%;font-size:16px}
+.db{padding:6px 18px 12px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.df{display:flex;gap:10px;padding:12px 18px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.df .btn{flex:1}
+.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:800;color:var(--mut)}
+.f input,.f select{height:48px;border-radius:14px;border:1px solid var(--line);background:var(--card);padding:0 14px;font-size:16px;outline:none;color:var(--ink);font-weight:600}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:800;color:var(--ink)}
+.sw input{width:22px;height:22px;accent-color:var(--warn)}
+.note{margin:0;color:var(--mut);font-size:13px;font-weight:600}
+.msg{margin:0;font-size:13px;font-weight:700;min-height:18px}
+.msg.ok{color:var(--acc)} .msg.err{color:var(--warn)}
+@media (max-width:600px){
+  dialog{margin:auto 0 0;width:100%;max-width:100%;border-radius:24px 24px 0 0;max-height:92dvh}
+}
+#toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:999px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:92vw;display:flex;gap:12px;align-items:center}
+#toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#toast button{border:0;background:none;color:var(--acc);font-weight:800;padding:0;text-decoration:underline}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="brand"><div class="logo" aria-hidden="true">🏠</div><div><b>Uy ro‘zg‘ori</b><small id="hello">Salom!</small></div></div>
+  <div class="hdr-r">
+    <button class="pill" id="syncPill" type="button" aria-label="Sinxronlash holati"><i></i><span id="syncTxt">Yakka</span></button>
+    <button class="icon" id="swap" type="button" aria-label="Uy / Do‘kon almashtirish" style="font-size:20px">🔄</button>
+    <button class="icon" id="gear" type="button" aria-label="Sozlamalar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h0a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+  <!-- UY: nima qolmadi -->
+  <section id="vHome" class="view">
+    <div class="card hero">
+      <div><h1>Uyda nima qolmadi?</h1><p>Bosib belgilang, keyin pastdagi “Yuborish” ni bosing.</p></div>
+      <div class="count" id="homeCount">0</div>
+    </div>
+
+    <div class="search">
+      <input id="q" type="text" placeholder="Qidirish yoki yangi narsa yozing…" autocomplete="off" enterkeyhint="done" aria-label="Narsa qidirish yoki qo‘shish">
+      <button class="btn p" id="qAdd" type="button" hidden>Qo‘shish</button>
+    </div>
+
+    <div id="freqBox" hidden><h3 class="sec">Tez-tez tugaydiganlar</h3><div class="chips" id="freq"></div></div>
+
+    <div id="catalog"></div>
+
+    <div>
+      <h3 class="sec">Hozir yo‘q narsalar</h3>
+      <ul class="list" id="homeList"></ul>
+      <p class="note" id="homeBought" style="margin-top:12px" hidden></p>
+    </div>
+  </section>
+
+  <!-- DO'KON: ptichka qo'yib chiqish -->
+  <section id="vShop" class="view" hidden>
+    <div class="card prog">
+      <div class="ring"><svg viewBox="0 0 64 64"><circle class="bg" cx="32" cy="32" r="26"/><circle class="fg" id="ringFg" cx="32" cy="32" r="26" stroke-dasharray="163.4" stroke-dashoffset="163.4"/></svg><b id="ringTxt">0%</b></div>
+      <div><b class="t" id="progT">Ro‘yxat bo‘sh</b><small id="progS">Uyda hamma narsa bor</small></div>
+    </div>
+    <div class="alert" id="newBanner" hidden><div><b id="newT">Uydan yangi narsalar</b><small>Uyda shular qolmagan</small></div><button type="button" id="newOk">Tushundim</button></div>
+    <div id="shopList"></div>
+    <div class="card cele" id="allDone" hidden><div class="big">🎉</div><h2>Hammasi olindi!</h2><p>Uyga qaytishingiz mumkin.</p></div>
+    <div id="nfBox" hidden><h3 class="sec">Topilmadi</h3><ul class="list" id="nfList"></ul></div>
+    <details class="dn" id="doneBox" hidden><summary>Olingan (<span id="doneN">0</span>)</summary><ul class="list" id="doneList"></ul><button class="btn block" id="clearDone" type="button" style="width:100%;margin-bottom:12px">Olinganlarni tozalash</button></details>
+    <button class="btn" id="shareBtn" type="button">Ro‘yxatni ulashish</button>
+  </section>
+
+</main>
+
+<nav class="bar" id="bar"><button type="button" class="btn p" id="sendBtn">Yuborish</button></nav>
+
+<!-- narsani tahrirlash / qo'shish -->
+<dialog id="dItem">
+  <form id="itemForm" method="dialog" novalidate>
+    <div class="dh"><h2 id="itemTitle">Narsa</h2><button type="button" class="xb" data-close aria-label="Yopish">✕</button></div>
+    <div class="db">
+      <label class="f">Nomi<input id="iName" type="text" maxlength="60" placeholder="Masalan: Non"></label>
+      <div class="g2">
+        <label class="f">Qancha<input id="iQty" type="text" maxlength="24" placeholder="2 dona, 1 kg…"></label>
+        <label class="f">Bo‘lim<select id="iCat"></select></label>
+      </div>
+      <label class="sw"><span>Zudlik bilan kerak</span><input id="iUrg" type="checkbox"></label>
+      <p class="msg err" id="iErr" role="alert"></p>
+    </div>
+    <div class="df">
+      <button type="button" class="btn d" id="iDel" hidden>O‘chirish</button>
+      <button type="button" class="btn" id="iNf" hidden>Topilmadi</button>
+      <button type="submit" class="btn p">Saqlash</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- sozlamalar -->
+<dialog id="dSet">
+  <form id="setForm" method="dialog" novalidate>
+    <div class="dh"><h2 id="setTitle">Sozlamalar</h2><button type="button" class="xb" data-close aria-label="Yopish">✕</button></div>
+    <div class="db">
+      <label class="f">Siz kimsiz?<select id="sRole"><option value="home">Uydaman (belgilayman)</option><option value="shop">Do‘konga boraman (olaman)</option></select></label>
+      <label class="f">Mavzu<select id="sTheme"><option value="auto">Avtomatik</option><option value="light">Yorug‘</option><option value="dark">Qorong‘i</option></select></label>
+      <button type="button" class="btn d" id="sWipe">Hamma narsani o‘chirish</button>
+    </div>
+    <div class="df"><button type="submit" class="btn p">Saqlash</button></div>
+  </form>
+</dialog>
+
+<dialog id="dRole"><div class="dh"><h2>Xush kelibsiz!</h2></div><div class="roles">
+  <button type="button" class="roleb" data-r="home"><span class="e">🏠</span><span><b>Men uydaman</b><small>Tugagan narsalarni belgilayman</small></span></button>
+  <button type="button" class="roleb" data-r="shop"><span class="e">🛒</span><span><b>Men do‘konga boraman</b><small>Ro‘yxatni ko‘rib, olib chiqaman</small></span></button>
+</div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+// eski telefon brauzerlari uchun zaxira (dialog qo‘llab-quvvatlanmasa)
+document.querySelectorAll('dialog').forEach(d => {
+  if (typeof d.showModal !== 'function') {
+    d.style.cssText = 'position:fixed;inset:auto 0 0 0;margin:0 auto;z-index:200;width:100%;max-width:520px;max-height:90vh;overflow:auto;background:#fff;border-radius:20px 20px 0 0;padding:0';
+    d.showModal = function () { this.setAttribute('open', ''); this.style.display = 'flex'; this.style.flexDirection = 'column'; };
+    d.close = function () { this.removeAttribute('open'); this.style.display = 'none'; };
+    d.style.display = 'none';
+  }
+});
+
+/* ---------------- ma'lumotlar ---------------- */
+const CATS = [
+  { id: 'oziq',   name: 'Oziq-ovqat',        emoji: '🍞' },
+  { id: 'sut',    name: 'Sut va go‘sht',     emoji: '🥛' },
+  { id: 'sabzi',  name: 'Sabzavot va meva',  emoji: '🥕' },
+  { id: 'uy',     name: 'Uy-ro‘zg‘or',       emoji: '🧼' },
+  { id: 'gigiena',name: 'Gigiena',           emoji: '🪥' },
+  { id: 'boshqa', name: 'Boshqa',            emoji: '📦' }
+];
+const CATALOG = [
+  ['Non', 'oziq', '🍞'], ['Guruch', 'oziq', '🍚'], ['Un', 'oziq', '🌾'], ['Makaron', 'oziq', '🍝'], ['O‘simlik yog‘i', 'oziq', '🫒'],
+  ['Shakar', 'oziq', '🍬'], ['Tuz', 'oziq', '🧂'], ['Choy', 'oziq', '🍵'], ['Qahva', 'oziq', '☕'], ['Yormalar', 'oziq', '🥣'], ['Pechenye', 'oziq', '🍪'], ['Konserva', 'oziq', '🥫'],
+  ['Sut', 'sut', '🥛'], ['Qatiq', 'sut', '🥣'], ['Tuxum', 'sut', '🥚'], ['Sariyog‘', 'sut', '🧈'], ['Pishloq', 'sut', '🧀'], ['Smetana', 'sut', '🥄'], ['Go‘sht', 'sut', '🥩'], ['Tovuq', 'sut', '🍗'], ['Kolbasa', 'sut', '🌭'], ['Baliq', 'sut', '🐟'],
+  ['Kartoshka', 'sabzi', '🥔'], ['Piyoz', 'sabzi', '🧅'], ['Sabzi', 'sabzi', '🥕'], ['Pomidor', 'sabzi', '🍅'], ['Bodring', 'sabzi', '🥒'], ['Sarimsoq', 'sabzi', '🧄'], ['Ko‘katlar', 'sabzi', '🌿'], ['Olma', 'sabzi', '🍎'], ['Banan', 'sabzi', '🍌'], ['Limon', 'sabzi', '🍋'], ['Uzum', 'sabzi', '🍇'],
+  ['Idish yuvish vositasi', 'uy', '🧴'], ['Kir yuvish kukuni', 'uy', '🧺'], ['Gubka', 'uy', '🧽'], ['Axlat paketi', 'uy', '🗑️'], ['Salfetka', 'uy', '🧻'], ['Tozalash vositasi', 'uy', '🧼'], ['Lampochka', 'uy', '💡'], ['Batareyka', 'uy', '🔋'],
+  ['Sovun', 'gigiena', '🧼'], ['Shampun', 'gigiena', '🧴'], ['Tish pastasi', 'gigiena', '🪥'], ['Hojatxona qog‘ozi', 'gigiena', '🧻'], ['Tish cho‘tkasi', 'gigiena', '🪥'], ['Paket-salfetka', 'gigiena', '🧻']
+];
+const catEmoji = id => (CATS.find(c => c.id === id) || CATS[CATS.length - 1]).emoji;
+const lookup = n => CATALOG.find(c => c[0].toLowerCase() === n.toLowerCase());
+const emojiFor = it => { const c = lookup(it.name); return c ? c[2] : catEmoji(it.cat); };
+const catFor = n => { const c = lookup(n); return c ? c[1] : 'boshqa'; };
+
+/* ---------------- holat ---------------- */
+const KEY = 'uyrozgor_v1';
+// === ULANISH: faqat shu ikki qatorni bir marta to‘ldiring (qo‘llanmaning 3-bo‘limi). Bo‘sh = faqat shu telefonda ===
+const SYNC_URL = '';   // masalan 'https://script.google.com/macros/s/.../exec'
+const SYNC_KEY = 'OILA-cefbae5a61c1';   // Apps Script'dagi KEY bilan bir xil
+// ==========================================================================================================
+const S = { items: [], role: '', sync: { url: SYNC_URL.trim(), key: SYNC_KEY.trim() }, freq: {}, theme: 'auto', lastSeen: 0, notify: '' };
+const $ = id => document.getElementById(id);
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+const now = () => Date.now();
+const live = () => S.items.filter(i => !i.del);
+
+function load() {
+  try {
+    const o = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (!o) return;
+    if (Array.isArray(o.items)) S.items = o.items;
+    if (o.role === 'home' || o.role === 'shop') S.role = o.role;
+    if (typeof o.lastSeen === 'number') S.lastSeen = o.lastSeen;
+    if (typeof o.notify === 'string') S.notify = o.notify;
+    if (o.freq && typeof o.freq === 'object') S.freq = o.freq;
+    if (o.theme) S.theme = o.theme;
+  } catch (e) { /* bo‘sh yoki buzilgan */ }
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify({ items: S.items, role: S.role, lastSeen: S.lastSeen, notify: S.notify, freq: S.freq, theme: S.theme })); } catch (e) { /* xotira yo‘q */ }
+}
+function applyTheme() {
+  const r = document.documentElement;
+  if (S.theme === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', S.theme);
+}
+
+let toastT;
+function toast(msg, undo) {
+  const t = $('toast'); t.textContent = msg;
+  if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Qaytarish'; b.onclick = () => { undo(); t.classList.remove('show'); }; t.appendChild(b); }
+  t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), undo ? 4500 : 2200);
+}
+
+/* ---------------- amallar ---------------- */
+function changed() { save(); render(); syncSoon(); }
+function findLive(name) { const low = name.trim().toLowerCase(); return live().find(i => i.name.toLowerCase() === low); }
+function bumpFreq(name) { const k = name.toLowerCase(); const f = S.freq[k] || { n: name, c: 0 }; f.c++; S.freq[k] = f; }
+
+function addItem(p) {
+  const name = (p.name || '').trim().replace(/\s+/g, ' ');
+  if (!name) return false;
+  const ex = findLive(name);
+  if (ex) {
+    if (ex.status === 'need') { toast('Bu allaqachon ro‘yxatda'); return false; }
+    ex.status = 'need'; ex.sent = false; ex.t = now();
+    if (p.qty !== undefined) ex.qty = p.qty;
+  } else {
+    S.items.push({ id: uid(), name, qty: p.qty || '', cat: p.cat || catFor(name), urgent: !!p.urgent, sent: false, st: 0, status: 'need', t: now(), c: now() });
+  }
+  bumpFreq(name); changed(); return true;
+}
+function setStatus(it, status) {
+  it.status = status; it.t = now(); changed();
+}
+function removeItem(it, withUndo) {
+  const prev = { del: it.del, t: it.t };
+  it.del = true; it.t = now(); changed();
+  if (withUndo) toast('“' + it.name + '” o‘chirildi', () => { it.del = false; it.t = now(); changed(); });
+}
+
+/* ---------------- chizish ---------------- */
+function tickSvg() { return '<svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 13.5l5.5 5.5L21 7.5"/></svg>'; }
+
+function rowEl(it, done, home) {
+  const li = document.createElement('li');
+  li.className = 'row' + (it.urgent && !done ? ' urgent' : '') + (done ? ' done' : '');
+  const tick = document.createElement('button');
+  tick.type = 'button'; tick.className = 'tick'; tick.innerHTML = tickSvg();
+  tick.setAttribute('aria-label', done ? it.name + ': qaytarish' : it.name + ': olindi');
+  tick.onclick = () => setStatus(it, done ? 'need' : 'bought');
+  const em = document.createElement('span'); em.className = 'em'; em.textContent = emojiFor(it);
+  const bd = document.createElement('button'); bd.type = 'button'; bd.className = 'bd';
+  const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = it.name;
+  const mt = document.createElement('span'); mt.className = 'mt';
+  const tags = [];
+  if (it.qty) tags.push([it.qty, '']);
+  if (it.urgent && !done) tags.push(['Zudlik bilan', 'w']);
+  if (home) tags.push([it.sent ? 'Yuborildi' : 'Yuborilmagan', it.sent ? '' : 'w']);
+  tags.forEach(([t, c]) => { const s = document.createElement('span'); s.className = 'tag ' + c; s.textContent = t; mt.appendChild(s); });
+  bd.append(nm, mt); bd.onclick = () => openItem(it);
+  const more = document.createElement('button'); more.type = 'button'; more.className = 'more'; more.textContent = '⋯'; more.setAttribute('aria-label', it.name + ': tahrirlash'); more.onclick = () => openItem(it);
+  if (home) li.append(em, bd, more); else li.append(tick, em, bd, more);
+  return li;
+}
+
+function renderHome() {
+  const need = live().filter(i => i.status === 'need');
+  $('homeCount').textContent = need.length;
+  const q = $('q').value.trim(), ql = q.toLowerCase();
+  const exact = q && lookup(q);
+  $('qAdd').hidden = !q || !!exact || !!findLive(q) && findLive(q).status === 'need';
+  $('qAdd').textContent = q ? '“' + (q.length > 14 ? q.slice(0, 14) + '…' : q) + '” qo‘shish' : 'Qo‘shish';
+
+  // tez-tez
+  const fr = Object.values(S.freq).filter(f => f.c >= 2).sort((a, b) => b.c - a.c).slice(0, 8);
+  $('freqBox').hidden = !fr.length || !!q;
+  const fb = $('freq'); fb.innerHTML = '';
+  fr.forEach(f => fb.appendChild(chipEl(f.n)));
+
+  // katalog
+  const cb = $('catalog'); cb.innerHTML = '';
+  CATS.forEach(cat => {
+    const list = CATALOG.filter(c => c[1] === cat.id && (!ql || c[0].toLowerCase().includes(ql)));
+    if (!list.length) return;
+    const sec = document.createElement('section'); sec.className = 'cat';
+    const h = document.createElement('h3'); h.className = 'sec'; h.textContent = cat.emoji + ' ' + cat.name; sec.appendChild(h);
+    const ch = document.createElement('div'); ch.className = 'chips';
+    list.forEach(c => ch.appendChild(chipEl(c[0])));
+    sec.appendChild(ch); cb.appendChild(sec);
+  });
+
+  // qo'shilgan, katalogda yo'q narsalar ham chip bo'lib ko'rinsin
+  // ro'yxat
+  const hl = $('homeList'); hl.innerHTML = '';
+  const sorted = need.slice().sort((a, b) => (b.urgent - a.urgent) || (b.c - a.c));
+  if (!sorted.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = 'Hozircha hammasi bor. Tugagan narsani yuqoridan bosing.'; hl.appendChild(li); }
+  sorted.forEach(it => hl.appendChild(rowEl(it, false, true)));
+  const got = live().filter(i => i.status === 'bought' && i.sent).length, nf = live().filter(i => i.status === 'nf').length;
+  const hb = $('homeBought'); hb.hidden = !(got || nf); hb.textContent = '✅ Olib kelingan: ' + got + ' ta' + (nf ? ' · ❓ Topilmadi: ' + nf + ' ta' : '');
+  const un = need.filter(i => !i.sent).length;
+  $('sendBtn').disabled = !un; $('sendBtn').textContent = un ? 'Yuborish (' + un + ' ta)' : 'Hammasi yuborilgan';
+}
+
+function chipEl(name) {
+  const it = findLive(name);
+  const b = document.createElement('button'); b.type = 'button';
+  b.className = 'chip' + (it && it.status === 'need' ? ' on' : '') + (it && it.status === 'bought' ? ' got' : '');
+  const c = lookup(name);
+  b.textContent = (c ? c[2] : catEmoji('boshqa')) + ' ' + name;
+  b.setAttribute('aria-pressed', it && it.status === 'need' ? 'true' : 'false');
+  b.onclick = () => {
+    const cur = findLive(name);
+    if (cur && cur.status === 'need') removeItem(cur, true); else addItem({ name });
+  };
+  return b;
+}
+
+function mine(i) { return i.sent; }
+
+function renderShop() {
+  const all = live().filter(mine);
+  const need = all.filter(i => i.status === 'need');
+  const bought = all.filter(i => i.status === 'bought');
+  const nf = all.filter(i => i.status === 'nf');
+  const total = need.length + bought.length;
+  const pct = total ? Math.round(bought.length / total * 100) : 0;
+  $('ringFg').style.strokeDashoffset = String(163.4 * (1 - pct / 100));
+  $('ringTxt').textContent = pct + '%';
+  if (!total) { $('progT').textContent = 'Ro‘yxat bo‘sh'; $('progS').textContent = 'Uyda hamma narsa bor'; }
+  else { $('progT').textContent = bought.length + ' / ' + total + ' olindi'; $('progS').textContent = need.length ? 'Yana ' + need.length + ' ta qoldi' : 'Hammasi tayyor'; }
+
+  const fresh = need.filter(i => (i.st || 0) > S.lastSeen).length;
+  $('newBanner').hidden = !fresh; if (fresh) $('newT').textContent = 'Uydan ' + fresh + ' ta narsa yuborildi';
+  const box = $('shopList'); box.innerHTML = '';
+  CATS.forEach(cat => {
+    const list = need.filter(i => i.cat === cat.id).sort((a, b) => (b.urgent - a.urgent) || (a.c - b.c));
+    if (!list.length) return;
+    const h = document.createElement('div'); h.className = 'groupH'; h.textContent = cat.emoji + ' ' + cat.name + ' · ' + list.length; box.appendChild(h);
+    const ul = document.createElement('ul'); ul.className = 'list';
+    list.forEach(it => ul.appendChild(rowEl(it, false))); box.appendChild(ul);
+  });
+  if (!need.length && !total) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Hozircha olinadigan narsa yo‘q. “Uy” bo‘limida tugaganini belgilang.'; box.appendChild(e); }
+  $('allDone').hidden = !(total && !need.length);
+
+  $('nfBox').hidden = !nf.length;
+  const nl = $('nfList'); nl.innerHTML = '';
+  nf.forEach(it => { const li = rowEl(it, false, false); li.querySelector('.tick').onclick = () => setStatus(it, 'bought'); nl.appendChild(li); });
+
+  $('doneBox').hidden = !bought.length;
+  $('doneN').textContent = bought.length;
+  const dl = $('doneList'); dl.innerHTML = '';
+  bought.sort((a, b) => b.t - a.t).forEach(it => dl.appendChild(rowEl(it, true)));
+}
+
+function renderNav() {
+  $('hello').textContent = S.role === 'shop' ? 'Do‘kon uchun ro‘yxat' : S.role === 'home' ? 'Uydan belgilash' : '';
+  $('vHome').hidden = S.role !== 'home'; $('vShop').hidden = S.role !== 'shop'; $('bar').hidden = S.role !== 'home';
+}
+function render() { renderNav(); if (S.role === 'home') renderHome(); else if (S.role === 'shop') renderShop(); }
+
+/* ---------------- tahrirlash oynasi ---------------- */
+let editing = null;
+function fillSelects() {
+  $('iCat').innerHTML = CATS.map(c => `<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
+}
+function openItem(it, preset) {
+  editing = it || null; fillSelects();
+  $('itemTitle').textContent = it ? 'Tahrirlash' : 'Yangi narsa';
+  $('iName').value = it ? it.name : (preset || ''); $('iQty').value = it ? it.qty : '';
+  $('iCat').value = it ? it.cat : catFor(preset || ''); $('iUrg').checked = it ? !!it.urgent : false;
+  $('iDel').hidden = !it; $('iNf').hidden = !(it && it.status === 'need'); $('iErr').textContent = '';
+  $('dItem').showModal();
+}
+$('itemForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('iName').value.trim().replace(/\s+/g, ' ');
+  if (!name) { $('iErr').textContent = 'Nomini yozing.'; return; }
+  const dup = findLive(name);
+  if (dup && (!editing || dup.id !== editing.id)) { $('iErr').textContent = 'Bunday narsa allaqachon bor.'; return; }
+  if (editing) {
+    Object.assign(editing, { name, qty: $('iQty').value.trim(), cat: $('iCat').value, urgent: $('iUrg').checked, t: now() });
+    changed();
+  } else {
+    addItem({ name, qty: $('iQty').value.trim(), cat: $('iCat').value, urgent: $('iUrg').checked });
+  }
+  $('dItem').close();
+});
+$('iDel').onclick = () => { if (editing) { removeItem(editing, true); $('dItem').close(); } };
+$('iNf').onclick = () => { if (editing) { setStatus(editing, 'nf'); $('dItem').close(); toast('“' + editing.name + '” topilmadi deb belgilandi'); } };
+
+/* ---------------- sozlamalar ---------------- */
+function openSettings(first) {
+  $('sRole').value = S.role || 'home'; $('sTheme').value = S.theme;
+  $('dSet').showModal();
+}
+$('setForm').addEventListener('submit', e => {
+  e.preventDefault();
+  S.role = $('sRole').value;
+  S.theme = $('sTheme').value; applyTheme();
+  save(); $('dSet').close(); render();
+});
+$('sWipe').onclick = () => {
+  if (!confirm('Ro‘yxatdagi hamma narsa o‘chirilsinmi?')) return;
+  S.items.forEach(i => { i.del = true; i.t = now(); }); S.freq = {}; changed(); $('dSet').close(); toast('Ro‘yxat tozalandi');
+};
+
+/* ---------------- sinxron (ixtiyoriy) ---------------- */
+let syncTimer = 0, syncDebounce = 0, syncBusy = false, syncState = 'local', lastOk = 0;
+function setPill(st) {
+  syncState = st; const p = $('syncPill'); p.className = 'pill' + (st === 'ok' ? ' ok' : st === 'err' ? ' err' : '');
+  $('syncTxt').textContent = st === 'ok' ? 'Sinxron' : st === 'err' ? 'Offlayn' : 'Yakka';
+}
+async function fetchRemote(url, key) {
+  const u = url + (url.includes('?') ? '&' : '?') + 'k=' + encodeURIComponent(key) + '&_=' + Date.now();
+  const r = await fetch(u, { cache: 'no-store' });
+  if (!r.ok) throw new Error('Server ' + r.status);
+  return r.json();
+}
+function merge(a, b) {
+  const m = new Map();
+  [...a, ...b].forEach(it => { if (!it || !it.id) return; const o = m.get(it.id); if (!o || (it.t || 0) > (o.t || 0)) m.set(it.id, it); });
+  const cutoff = now() - 14 * 864e5;
+  return [...m.values()].filter(it => !(it.del && (it.t || 0) < cutoff));
+}
+const sig = arr => arr.map(i => i.id + ':' + (i.t || 0)).sort().join('|');
+async function syncNow() {
+  const { url, key } = S.sync; if (!url || syncBusy) return;
+  syncBusy = true;
+  try {
+    const d = await fetchRemote(url, key);
+    if (d.error) throw new Error('key');
+    const remote = Array.isArray(d.items) ? d.items : [];
+    const before = sig(S.items), merged = merge(S.items, remote);
+    const changedLocal = sig(merged) !== before, needPush = sig(merged) !== sig(remote) || !!S.notify;
+    const prevFresh = freshCount();
+    S.items = merged;
+    if (needPush) await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ k: key, items: merged, notify: S.notify || '' }) });
+    if (needPush) { S.notify = ''; save(); }
+    lastOk = now(); setPill('ok');
+    if (changedLocal) { save(); render(); if (S.role === 'shop' && freshCount() > prevFresh) alertNew(); }
+  } catch (e) { setPill('err'); }
+  finally { syncBusy = false; }
+}
+function freshCount() { return live().filter(i => i.status === 'need' && i.sent && (i.st || 0) > S.lastSeen).length; }
+function alertNew() {
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+  try { if ('Notification' in window && Notification.permission === 'granted') new Notification('Uy ro‘zg‘ori', { body: 'Uyda ' + freshCount() + ' ta narsa qolmadi. Ro‘yxatni oching.' }); } catch (e) {}
+}
+function syncSoon() { if (!S.sync.url) return; clearTimeout(syncDebounce); syncDebounce = setTimeout(syncNow, 700); }
+function startSync(immediate) {
+  clearInterval(syncTimer);
+  if (!S.sync.url) { setPill('local'); return; }
+  setPill(syncState === 'ok' ? 'ok' : 'err');
+  if (immediate !== false) syncNow();
+  syncTimer = setInterval(() => { if (!document.hidden) syncNow(); }, 5000);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) syncNow(); });
+$('syncPill').onclick = () => openSettings(false);
+
+/* ---------------- ulashish ---------------- */
+function listText() {
+  const need = live().filter(i => i.status === 'need');
+  if (!need.length) return 'Uyda hamma narsa bor.';
+  const lines = ['🛒 Olinadigan narsalar (' + need.length + '):', ''];
+  CATS.forEach(c => { need.filter(i => i.cat === c.id).forEach(i => lines.push('☐ ' + i.name + (i.qty ? ' — ' + i.qty : '') + (i.urgent ? ' (zudlik bilan)' : '') + (i.who ? ' [' + i.who + ']' : ''))); });
+  return lines.join('\n');
+}
+$('shareBtn').onclick = async () => {
+  const text = listText();
+  try {
+    if (navigator.share) { await navigator.share({ text }); return; }
+  } catch (e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(text); toast('Ro‘yxat nusxalandi'); } catch (e) { window.prompt('Nusxalang:', text); }
+};
+
+/* ---------------- yuborish ---------------- */
+function sendNow() {
+  const un = live().filter(i => i.status === 'need' && !i.sent); if (!un.length) return;
+  const t = now(); un.forEach(i => { i.sent = true; i.st = t; i.t = t; });
+  const lines = un.map(i => '• ' + i.name + (i.qty ? ' — ' + i.qty : '') + (i.urgent ? ' (zudlik bilan)' : ''));
+  S.notify = '🏠 Uyda shular qolmadi:\n' + lines.join('\n');
+  changed();
+  toast(S.sync.url ? 'Yuborildi: ' + un.length + ' ta' : 'Saqlandi. Ulanish yo‘q, boshqa telefon ko‘rmaydi');
+}
+function pickRole(r) {
+  S.role = r; save(); $('dRole').close(); render();
+  if (r === 'shop') { try { 'Notification' in window && Notification.permission === 'default' && Notification.requestPermission(); } catch (e) {} }
+}
+
+/* ---------------- ulash ---------------- */
+function init() {
+  load(); applyTheme(); fillSelects();
+  $('sendBtn').onclick = sendNow;
+  $('newOk').onclick = () => { S.lastSeen = now(); save(); render(); };
+  document.querySelectorAll('.roleb').forEach(b => b.onclick = () => pickRole(b.dataset.r));
+  $('dRole').addEventListener('cancel', e => e.preventDefault());
+  $('gear').onclick = () => openSettings(false);
+  $('swap').onclick = () => { S.role = S.role === 'home' ? 'shop' : 'home'; save(); render(); window.scrollTo({ top: 0 }); toast(S.role === 'home' ? 'Uy ko‘rinishi' : 'Do‘kon ko‘rinishi'); };
+  $('q').addEventListener('input', renderHome);
+  $('q').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('qAdd').click(); } });
+  $('qAdd').onclick = () => { const q = $('q').value.trim(); if (!q) return; if (addItem({ name: q })) { $('q').value = ''; toast('“' + q + '” qo‘shildi'); } };
+  $('clearDone').onclick = () => { const b = live().filter(i => i.status === 'bought'); b.forEach(i => { i.del = true; i.t = now(); }); changed(); };
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+  document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+  render(); startSync();
+  if (!S.role) $('dRole').showModal();
+}
+init();
+})();
+</script>
+</body>
+</html>
